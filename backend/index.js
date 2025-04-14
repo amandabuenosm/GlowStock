@@ -1,56 +1,37 @@
+/** ponto de entrada da aplicação */
 
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const swaggerui = require('swagger-ui-express');
+const swaggerjsdoc = require('swagger-jsdoc');
 
+const rotaprodutos = require('./routes/produtosRoutes');
+const app = express();
+app.use(cors());
+app.use(express.json());
 
+const localswagger = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Gestão de Estoque de Cosméticos API',
+            version: '1.0.0',
+            description: 'Documentação da API do GlowStock',
+            servers: {
+                url: 'http://localhost:3000/api'
+            },
+        },
+    },
+    apis: ['./routes/*.js'],
+};
 
+const configswagger = swaggerjsdoc(localswagger);
+app.use('/api-produtos', rotaprodutos)
+app.use('/api-glowstock', swaggerui.serve, swaggerui.setup(configswagger));
 
-
-
-
-
-
-
-
-/************************************************************************* */
-
-// Ponto de entrada da aplicação
-
-// require('dotenv').config();
-// const express = require('express');
-// const cors = require('cors');
-// const app = express();
-// const produtosRoutes = require('./backend/routes/produtosRoutes');
-
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerJsdoc = require('swagger-jsdoc');
-
-// const swaggerOptions = {
-//   definition: {
-//     openapi: '3.0.0',
-//     info: {
-//       title: 'API Controle de Estoque - Loja de Cosméticos',
-//       version: '1.0.0',
-//       description: 'Documentação da API de produtos',
-//     },
-//     servers: [
-//       {
-//         url: 'http://localhost:3000/api',
-//       },
-//     ],
-//   },
-//   apis: ['./backend/routes/*.js'], // local onde estarão os comentários Swagger
-// };
-
-// const swaggerDocs = swaggerJsdoc(swaggerOptions);
-
-// app.use(cors());
-// app.use(express.json());
-
-// app.use('/api', produtosRoutes);
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); // <- Swagger aqui
-
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Servidor rodando na porta ${PORT}`);
-//   console.log(`Swagger disponível em http://localhost:${PORT}/api-docs`);
-// });
-
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log('Servidor rodando na porta ${PORT}');
+    console.log('Documentação Swagger disponível em http:localhost:${PORT}/api-glowstock');
+});
