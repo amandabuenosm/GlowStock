@@ -1,0 +1,18 @@
+-- Caso necessário, esse é o script para criação do banco de dados
+USE `lojacosmeticos` ;
+SELECT * FROM produtos;
+
+CREATE TABLE IF NOT EXISTS `lojacosmeticos`.`produtos` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nome` VARCHAR(100) NOT NULL,
+  `codigo` VARCHAR(10) NOT NULL,
+  `preco` DECIMAL(10,2) NOT NULL,
+  `qtde_estoque` INT NULL,
+  `marca` TEXT(20) NOT NULL);
+
+INSERT INTO produtos (nome, codigo, preco, qtde_estoque, marca) VALUES
+('Creme Hidratante O Boticário Ameixa Negra', 'CHBAN1425', 68.99, 10, 'O Boticário'),
+('Base Líquida Matte', 'CODM98S', 49.90, 5, 'Vult'),
+('Paleta de Sombras Glam', 'WKIS9908', 79.90, 12, 'Ruby Rose'),
+('Demaquilante Bifásico 150ml', 'DMBQ908', 33.90, 14, 'Eudora'),
+('Sabonete Facial em Gel', 'SFBG007', 27.40, 9, 'La Roche-Posay');
