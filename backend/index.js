@@ -27,11 +27,11 @@ const localswagger = {
 };
 
 const configswagger = swaggerjsdoc(localswagger);
-app.use('/api-produtos', rotaprodutos)
+app.use('/produtos', rotaprodutos)
 app.use('/api-glowstock', swaggerui.serve, swaggerui.setup(configswagger));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log('Servidor rodando na porta ${PORT}');
-    console.log('Documentação Swagger disponível em http:localhost:${PORT}/api-glowstock');
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Documentação Swagger disponível em http:localhost:${PORT}/api-glowstock`);
 });
