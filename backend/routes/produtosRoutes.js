@@ -25,9 +25,6 @@ module.exports = rota;
  *        - preco
  *        - marca
  *      properties: 
- *        id:
- *          type: integer
- *          description: ID do Produto
  *        nome: 
  *          type: string
  *          description: Nome/Descrição do Produto
@@ -45,7 +42,6 @@ module.exports = rota;
  *          type: string 
  *          description: Marca do Produto
  *      example: 
- *         id: 1
  *         nome: Creme Hidratante
  *         codigo: CHOB123
  *         preco: 68.99
