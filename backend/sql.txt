@@ -1,7 +1,11 @@
--- Caso necessário, esse é o script para criação do banco de dados
+-- Caso necessário, esse é o script para criação/consulta do banco de dados
 USE `lojacosmeticos` ;
 SELECT * FROM produtos;
 
+---------------------------------------------
+
+CREATE SCHEMA `lojacosmeticos`;
+USE `lojacosmeticos`;
 CREATE TABLE IF NOT EXISTS `lojacosmeticos`.`produtos` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `nome` VARCHAR(100) NOT NULL,
@@ -10,6 +14,9 @@ CREATE TABLE IF NOT EXISTS `lojacosmeticos`.`produtos` (
   `qtde_estoque` INT NULL,
   `marca` TEXT(20) NOT NULL);
 
+---------------------------------------------
+
+USE `lojacosmeticos`;
 INSERT INTO produtos (nome, codigo, preco, qtde_estoque, marca) VALUES
 ('Creme Hidratante O Boticário Ameixa Negra', 'CHBAN1425', 68.99, 10, 'O Boticário'),
 ('Base Líquida Matte', 'CODM98S', 49.90, 5, 'Vult'),
