@@ -10,7 +10,7 @@ const crudprodutos = {
         database.query('SELECT * FROM produtos WHERE id = ?', [id], callback);
     },
     criarprod: (novoproduto, callback) => {
-        database.query('INSERTI INTO produtos SET ?', novoproduto, callback);
+        database.query('INSERT INTO produtos SET ?', novoproduto, callback);
     },
     editaritem: (id, produtoEdit, callback) => {
         database.query('UPDATE produtos SET ? WHERE id = ?', [produtoEdit, id], callback);
