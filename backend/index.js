@@ -19,7 +19,7 @@ const localswagger = {
             version: '1.0.0',
             description: 'Documentação da API do GlowStock',
             servers: {
-                url: 'http://localhost:3000/api'
+                url: 'http://localhost:5000/api'
             },
         },
     },
@@ -30,7 +30,7 @@ const configswagger = swaggerjsdoc(localswagger);
 app.use('/produtos', rotaprodutos)
 app.use('/api-glowstock', swaggerui.serve, swaggerui.setup(configswagger));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
     console.log(`Documentação Swagger disponível em http:localhost:${PORT}/api-glowstock`);
