@@ -1,6 +1,9 @@
 -- Caso necessário, esse é o script para criação/consulta do banco de dados
-USE `lojacosmeticos` ;
-SELECT * FROM produtos;
+-- COMANDOS ESPECÍFICOS
+
+USE `lojacosmeticos`;
+SELECT * FROM `?`;
+TRUNCATE TABLE `?`;
 
 ---------------------------------------------
 
@@ -23,3 +26,24 @@ INSERT INTO produtos (nome, codigo, preco, qtde_estoque, marca) VALUES
 ('Paleta de Sombras Glam', 'WKIS9908', 79.90, 12, 'Ruby Rose'),
 ('Demaquilante Bifásico 150ml', 'DMBQ908', 33.90, 14, 'Eudora'),
 ('Sabonete Facial em Gel', 'SFBG007', 27.40, 9, 'La Roche-Posay');
+
+---------------------------------------------
+
+USE `lojacosmeticos`;
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  login VARCHAR(20) NOT NULL,
+  nomecomp VARCHAR(100) NOT NULL,
+  senha VARCHAR(60) NOT NULL,
+  status ENUM('ativo', 'inativo') NOT NULL DEFAULT 'ativo'
+);
+
+---------------------------------------------
+
+USE `lojacosmeticos`;
+INSERT INTO usuarios (login, nomecomp, senha) VALUES
+('admin', 'Administrador do Sistema', 'monolith'),
+('pnunes', 'Patricia Nunes', 'yearzero'),
+('mgomes', 'Miriam Gomes', 'reinraus');
+
+---------------------------------------------
