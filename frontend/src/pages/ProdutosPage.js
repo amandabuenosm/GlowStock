@@ -1,207 +1,194 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import '../style/ProdutosPage.css'; // css separado
 
 const ProdutosPage = () => {
-    const [produtos, setProdutos] = useState([]);
-    const [formulario, setForm] = useState({
+  const [produtos, setProdutos] = useState([]);
+  const [formulario, setForm] = useState({
+    nome: '',
+    codigo: '',
+    preco: '',
+    qtde_estoque: '',
+    marca: '',
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProdutos();
+  }, []);
+
+  const fetchProdutos = async () => {
+    try {
+      const response = await api.get('/produtos');
+      setProdutos(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isEditing) {
+        await api.put(`/produtos/${editId}`, formulario);
+        setIsEditing(false);
+        setEditId(null);
+      } else {
+        await api.post('/produtos', formulario);
+      }
+      fetchProdutos();
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Erro ao gravar produto:', error);
+    }
+  };
+
+  const handleEdit = (produto) => {
+    setIsEditing(true);
+    setEditId(produto.id);
+    setForm({
+      nome: produto.nome,
+      codigo: produto.codigo,
+      preco: produto.preco,
+      qtde_estoque: produto.qtde_estoque,
+      marca: produto.marca || '',
+    });
+    setOpenDialog(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/produtos/${id}`);
+      fetchProdutos();
+    } catch (error) {
+      console.error('Erro ao deletar produto:', error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleOpenDialog = () => {
+    setIsEditing(false);
+    setEditId(null);
+    setForm({
       nome: '',
       codigo: '',
       preco: '',
       qtde_estoque: '',
       marca: '',
     });
-    const [isEditing, setIsEditing] = useState(false);
-    const [editId, setEditId] = useState(null);
-  
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      fetchProdutos();
-    }, []);
-  
-    const fetchProdutos = async () => {
-      try {
-        const response = await api.get('/produtos');
-        setProdutos(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar produtos:', error);
-      }
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        if (isEditing) {
-          await api.put(`/produtos/${editId}`, formulario);
-          setIsEditing(false);
-          setEditId(null);
-        } else {
-          await api.post('/produtos', formulario);
-        }
-        fetchProdutos();
-        setForm({
-          nome: '',
-          codigo: '',
-          preco: '',
-          qtde_estoque: '',
-          marca: '',
-        });
-      } catch (error) {
-        console.error('Erro ao gravar produto:', error);
-      }
-    };
-  
-    const handleEdit = (produto) => {
-      setIsEditing(true);
-      setEditId(produto.id);
-      setForm({
-        nome: produto.nome,
-        codigo: produto.codigo,
-        preco: produto.preco,
-        qtde_estoque: produto.qtde_estoque,
-        marca: produto.marca || '',
-      });
-    };
-  
-    const handleDelete = async (id) => {
-      try {
-        await api.delete(`/produtos/${id}`);
-        fetchProdutos();
-      } catch (error) {
-        console.error('Erro ao deletar produto:', error);
-      }
-    };
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setForm((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
-  
-    return (
-      <Box sx={{ padding: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-          <Typography variant="h4">Controle de Produtos</Typography>
-          <Button variant="outlined" color="primary" onClick={() => navigate('/')}>
-            Voltar para Página Inicial
-          </Button>
-        </Box>
-  
-        <Paper elevation={3} sx={{ padding: 3, marginBottom: 4 }}>
-          <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <TextField
-                label="Nome do Produto"
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  return (
+    <div className="page-container">
+      <div className="header">
+        <h1>Controle de Produtos</h1>
+        <button onClick={() => navigate('/')} className="voltar">Voltar para Página Inicial</button>
+      </div>
+
+      <div className="actions">
+        <button onClick={handleOpenDialog}>Adicionar Produto</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Código</th>
+            <th>Preço</th>
+            <th>Qtd Estoque</th>
+            <th>Marca</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {produtos.map((produto) => (
+            <tr key={produto._id}>
+              <td>{produto.nome}</td>
+              <td>{produto.codigo}</td>
+              <td>{produto.preco}</td>
+              <td>{produto.qtde_estoque}</td>
+              <td>{produto.marca}</td>
+              <td>
+                <button onClick={() => handleEdit(produto)}>Editar</button>
+                <button onClick={() => handleDelete(produto.id)} className="danger">Excluir</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {openDialog && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{isEditing ? 'Editar Produto' : 'Adicionar Produto'}</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
                 name="nome"
+                placeholder="Nome do Produto"
                 value={formulario.nome}
                 onChange={handleChange}
-                fullWidth
                 required
               />
-              <TextField
-                label="Código"
+              <input
+                type="text"
                 name="codigo"
-                type="string"
+                placeholder="Código"
                 value={formulario.codigo}
                 onChange={handleChange}
-                fullWidth
                 required
               />
-              <TextField
-                label="Preço do Produto"
+              <input
+                type="text"
                 name="preco"
+                placeholder="Preço"
                 value={formulario.preco}
                 onChange={handleChange}
-                fullWidth
                 required
               />
-              <TextField
-                label="Quantidade em Estoque"
+              <input
+                type="text"
                 name="qtde_estoque"
+                placeholder="Quantidade em Estoque"
                 value={formulario.qtde_estoque}
                 onChange={handleChange}
-                fullWidth
                 required
               />
-              <TextField
-                label="Marca"
+              <input
+                type="text"
                 name="marca"
+                placeholder="Marca"
                 value={formulario.marca}
                 onChange={handleChange}
-                fullWidth
                 required
               />
-              <Button
-                type="submit"
-                variant="contained"
-                color={isEditing ? 'warning' : 'primary'}
-              >
-                {isEditing ? 'Atualizar' : 'Adicionar'} Produto
-              </Button>
-            </Box>
-          </form>
-        </Paper>
-  
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Nome do Produto</TableCell>
-                <TableCell>Código</TableCell>
-                <TableCell>Preço</TableCell>
-                <TableCell>Quantidade em Estoque</TableCell>
-                <TableCell>Marca</TableCell>
-                <TableCell>Ações</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {produtos.map((produto) => (
-                <TableRow key={produto._id}>
-                  <TableCell>{produto.nome}</TableCell>
-                  <TableCell>{produto.codigo}</TableCell>
-                  <TableCell>{produto.preco}</TableCell>
-                  <TableCell>{produto.qtde_estoque}</TableCell>
-                  <TableCell>{produto.marca}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleEdit(produto)}
-                      sx={{ marginRight: 1 }}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => handleDelete(produto.id)}
-                    >
-                      Excluir
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    );
-  };
-  
-  export default ProdutosPage;
+              <div className="modal-actions">
+                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProdutosPage;
