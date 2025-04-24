@@ -7,6 +7,7 @@ const swaggerui = require('swagger-ui-express');
 const swaggerjsdoc = require('swagger-jsdoc');
 
 const rotaprodutos = require('./routes/produtosRoutes');
+const rotausuarios = require('./routes/usuariosRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -28,6 +29,7 @@ const localswagger = {
 
 const configswagger = swaggerjsdoc(localswagger);
 app.use('/produtos', rotaprodutos)
+app.use('/usuarios', rotausuarios);
 app.use('/api-glowstock', swaggerui.serve, swaggerui.setup(configswagger));
 
 const PORT = process.env.PORT || 5000;
