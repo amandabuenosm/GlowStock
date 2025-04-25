@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import '../style/ProdutosPage.css'; // css separado
 
 const ProdutosPage = () => {
   const [produtos, setProdutos] = useState([]);
@@ -19,6 +18,7 @@ const ProdutosPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    import ('../style/ProdutosPage.css');
     fetchProdutos();
   }, []);
 
