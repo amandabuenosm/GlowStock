@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const LoginPage = () => {
@@ -7,7 +6,6 @@ const LoginPage = () => {
         login: '',
         senha: '',
     });
-    const [error, setError] = useState('');
 
     // envio do formulário
     const handleSubmit = async (e) => {
@@ -18,16 +16,17 @@ const LoginPage = () => {
             // armazena os dados do usuário logado
             sessionStorage.setItem('usuario', JSON.stringify(response.data));
 
-            window.location.href = '/';
+            window.location.href="/produtos";
         } catch (err) {
-            setError(err.response?.data?.error || 'Erro ao fazer login. Tente novamente!')
+            const mensagem = err.response?.data?.error || 'Usuário/Senha inválidos!';
+            alert(mensagem);
         }
     }
 
     // mudança nos inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
+        setForm((prev) => ({
           ...prev,
           [name]: value,
         }));
@@ -40,10 +39,21 @@ const LoginPage = () => {
         </div>
         
         <section className="modulo-login">
+            <article className="header-login">
+                <h2>Login</h2>
+            </article>
             
-        </section>
+            <form onSubmit={ handleSubmit}>
+                <input type="text" name="login" placeholder="Usuário" onChange={handleChange} required/>
+                
+                <input type="password" name="senha" placeholder="Senha" onChange={handleChange} required/>
 
+                <button type="submit">Acessar</button>
+            </form>
+        </section>
 
     </div>
     );
 };
+
+export default LoginPage;
