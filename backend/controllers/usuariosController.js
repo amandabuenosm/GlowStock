@@ -7,6 +7,17 @@ const controllerUsuario = {
             res.json(results);
         });
     },
+    buscalogin: (req, res) => {
+        const { login, senha } = req.body;
+        funcModelUser.buscalogin(login, senha, (err, results) => {
+            if (err) return res.status(500).json({ error: err });
+
+            if (results.length === 0) {
+                return res.status(401).json({ error: 'Usuário/Senha inválidos.' });
+            }
+            res.json(results[0]);
+        });
+    },
     buscapeloid: (req, res) => {
         const id = req.params.id;
         funcModelUser.buscapeloid(id, (err, results) => {
