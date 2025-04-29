@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../services/api';
+import '../style/LoginPage.css';
 
 const LoginPage = () => {
     const [formLogin, setForm] = useState({
@@ -33,13 +34,13 @@ const LoginPage = () => {
     };
 
     return (
-    <div className="page-container">
-        <div className="header">
+    <div className="login-container">
+        <div className="menu-header">
             <h1>Sistema de Controle de Estoque GlowStock</h1>
         </div>
         
         <section className="modulo-login">
-            <article className="header-login">
+            <article className="header-modulo-login">
                 <h2>Login</h2>
             </article>
             
@@ -50,6 +51,8 @@ const LoginPage = () => {
 
                 <button type="submit">Acessar</button>
             </form>
+
+            <a link href="/" target="blank">Não tem uma conta? Registre-se!</a>
         </section>
 
     </div>
