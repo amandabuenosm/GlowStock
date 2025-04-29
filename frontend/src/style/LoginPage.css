@@ -1,0 +1,58 @@
+.login-container {
+    height: 100vh;
+    background-color: pink;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-header {
+    padding: 40px;
+    background-color: cyan;
+}
+
+.modulo-login {
+    width: 300px;
+    background-color: rgb(88, 8, 95);
+    border-radius: 10px;
+    height: 45%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.header-modulo-login {
+    border-bottom: 1px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form, button[type="submit"] {
+    display: flex;
+    margin: 25px;
+    flex-direction: column;
+    width: 80%;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: none
+}
+
+button[type="submit"] {
+    background-color: rgb(85 63 207);
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    margin-block: 25px;
+    border-radius: 5px;
+    border: none;
+}
+
+a {
+    color: white;
+}
