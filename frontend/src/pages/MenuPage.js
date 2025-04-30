@@ -11,7 +11,7 @@ const MenuPage = () => {
         </div>
         
         <section className="modulo-menu">
-            <article className="header-menu">
+            <article className="header-modulo-menu">
                 <h2>Selecione um módulo para seu melhor controle de estoque</h2>
             </article>
             
@@ -33,6 +33,7 @@ const MenuPage = () => {
 
                 <Link to="/relatorios" className="sessao-relatorios">
                     <h3>Relatórios</h3>
+                    <h5>Faça a análise de movimentações e produtos de seu estoque por relatórios em PDF ou Excel nessa tela!</h5>
                 </Link>
             </article>
         </section>
