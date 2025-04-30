@@ -1,0 +1,43 @@
+.sessoes {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.sessao-usuarios, .sessao-produtos,
+.sessao-movimentacao, .sessao-relatorios {
+    flex-basis: calc(45% - 20px);
+    padding: 20px;
+    background-color: hsla(237, 82%, 32%, 0.951);
+    border-radius: 25px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-container {
+    height: 100vh;
+    background-color: pink;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-header {
+    display: flex;
+    padding: 40px;
+    margin-bottom: 30px;
+    background-color: cyan;
+}
+
+.modulo-menu {
+    background-color: rgb(88, 8, 95);
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    margin: auto;
+}
