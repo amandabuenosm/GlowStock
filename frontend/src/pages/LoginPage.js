@@ -17,7 +17,7 @@ const LoginPage = () => {
             // armazena os dados do usuário logado
             sessionStorage.setItem('usuario', JSON.stringify(response.data));
 
-            window.location.href="/produtos";
+            window.location.href="/menuPrincipal";
         } catch (err) {
             const mensagem = err.response?.data?.error || 'Usuário/Senha inválidos!';
             alert(mensagem);
@@ -35,7 +35,7 @@ const LoginPage = () => {
 
     return (
     <div className="login-container">
-        <div className="menu-header">
+        <div className="login-header">
             <h1>Sistema de Controle de Estoque GlowStock</h1>
         </div>
         
