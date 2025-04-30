@@ -1,9 +1,11 @@
 .produtos-container {
   height: 100vh;
-  background-color: #0095ff;
+  background-color: #0095ff;  
+  display: flex;
+  flex-direction: column;
 }
 
-.header {
+.produtos-header {
   display: flex;
   justify-content: space-between;
   padding: 40px;
