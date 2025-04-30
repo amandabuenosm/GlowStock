@@ -96,8 +96,8 @@ const ProdutosPage = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="header">
+    <div className="produtos-container">
+      <div className="produtos-header">
         <h1>Controle de Produtos</h1>
         <button onClick={() => navigate('/')} className="voltar">Voltar para Página Inicial</button>
       </div>
