@@ -47,3 +47,15 @@ INSERT INTO usuarios (login, nomecomp, senha) VALUES
 ('mgomes', 'Miriam Gomes', 'reinraus');
 
 ---------------------------------------------
+
+USE `lojacosmeticos`;
+CREATE TABLE IF NOT EXISTS movimentacoes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  produto_id INT NOT NULL,
+  tipo_movimentacao ENUM('entrada', 'saida') NOT NULL,
+  quantidade INT NOT NULL,
+  data_hora DATETIME NOT NULL,
+  usuario_id INT NOT NULL,
+  FOREIGN KEY (produto_id) REFERENCES produtos(id),
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
