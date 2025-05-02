@@ -8,6 +8,7 @@ const swaggerjsdoc = require('swagger-jsdoc');
 
 const rotaprodutos = require('./routes/produtosRoutes');
 const rotausuarios = require('./routes/usuariosRoutes');
+const rotamovimentacoes = require('./routes/movimentRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -18,7 +19,7 @@ const localswagger = {
         info: {
             title: 'Gestão de Estoque de Cosméticos API',
             version: '1.0.0',
-            description: 'Documentação da API do GlowStock',
+            description: 'Documentação da API do Sistema de Estoque de Cosméticos GlowStock',
             servers: {
                 url: 'http://localhost:5000/api'
             },
@@ -30,6 +31,7 @@ const localswagger = {
 const configswagger = swaggerjsdoc(localswagger);
 app.use('/produtos', rotaprodutos)
 app.use('/usuarios', rotausuarios);
+app.use('/movimentacoes', rotamovimentacoes)
 app.use('/api-glowstock', swaggerui.serve, swaggerui.setup(configswagger));
 
 const PORT = process.env.PORT || 5000;
