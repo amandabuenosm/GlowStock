@@ -1,23 +1,50 @@
-/** funções de acesso com o banco */
-
 const database = require('../config/db');
 
 const crudprodutos = {
-    listarprod: (callback) => {
-        database.query('SELECT * FROM produtos', callback);
-    },
-    buscapeloid: (id, callback) => {
-        database.query('SELECT * FROM produtos WHERE id = ?', [id], callback);
-    },
-    criarprod: (novoproduto, callback) => {
-        database.query('INSERT INTO produtos SET ?', novoproduto, callback);
-    },
-    editaritem: (id, produtoEdit, callback) => {
-        database.query('UPDATE produtos SET ? WHERE id = ?', [produtoEdit, id], callback);
-    },
-    deletaritem: (id, callback) => {
-        database.query('DELETE FROM produtos WHERE id = ?', [id], callback);
-    },
-}
+  listarprod: () => {
+    return new Promise((resolve, reject) => {
+      database.query('SELECT * FROM produtos', (err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      });
+    });
+  },
+
+  buscapeloid: (id) => {
+    return new Promise((resolve, reject) => {
+      database.query('SELECT * FROM produtos WHERE id = ?', [id], (err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      });
+    });
+  },
+
+  criarprod: (novoproduto) => {
+    return new Promise((resolve, reject) => {
+      database.query('INSERT INTO produtos SET ?', novoproduto, (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+  },
+
+  editaritem: (id, produtoEdit) => {
+    return new Promise((resolve, reject) => {
+      database.query('UPDATE produtos SET ? WHERE id = ?', [produtoEdit, id], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+  },
+
+  deletaritem: (id) => {
+    return new Promise((resolve, reject) => {
+      database.query('DELETE FROM produtos WHERE id = ?', [id], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+  },
+};
 
 module.exports = crudprodutos;
