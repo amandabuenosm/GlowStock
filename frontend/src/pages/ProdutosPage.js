@@ -24,27 +24,34 @@ const ProdutosPage = () => {
 
   const fetchProdutos = async () => {
     try {
-      const response = await api.get('/produtos');
-      setProdutos(response.data);
+        const response = await api.get('/produtos');
+        setProdutos(response.data);
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
+        console.error('Erro ao buscar produtos:', error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    const dadosusuariologado = {
+        ...formulario,
+        usuario_id: usuario.id, // id do usuário logado salvo
+    };
+
     try {
-      if (isEditing) {
-        await api.put(`/produtos/${editId}`, formulario);
-        setIsEditing(false);
-        setEditId(null);
-      } else {
-        await api.post('/produtos', formulario);
-      }
-      fetchProdutos();
-      handleCloseDialog();
+        if (isEditing) {
+            await api.put(`/produtos/${editId}`, dadosusuariologado);  // envio de dados ao backend
+            setIsEditing(false);
+            setEditId(null);
+        } else {
+            await api.post('/produtos', dadosusuariologado);
+        }
+        fetchProdutos();  // recarregar produtos para atualizar no frontend
+        handleCloseDialog();
     } catch (error) {
-      console.error('Erro ao gravar produto:', error);
+        console.error('Erro ao gravar produto:', error.response ? error.response.data : error);
     }
   };
 
@@ -119,7 +126,7 @@ const ProdutosPage = () => {
         </thead>
         <tbody>
           {produtos.map((produto) => (
-            <tr key={produto._id}>
+            <tr key={produto.id}>
               <td>{produto.nome}</td>
               <td>{produto.codigo}</td>
               <td>{produto.preco}</td>
