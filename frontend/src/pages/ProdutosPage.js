@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const ProdutosPage = () => {
   const [produtos, setProdutos] = useState([]);
+
+  useEffect(() => {
+    import ('../style/ProdutosPage.css');
+    fetchProdutos();
+  }, []);
+
+  const navigate = useNavigate();
+
   const [formulario, setForm] = useState({
     nome: '',
     codigo: '',
@@ -14,13 +22,6 @@ const ProdutosPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    import ('../style/ProdutosPage.css');
-    fetchProdutos();
-  }, []);
 
   const fetchProdutos = async () => {
     try {
@@ -73,7 +74,8 @@ const ProdutosPage = () => {
       await api.delete(`/produtos/${id}`);
       fetchProdutos();
     } catch (error) {
-      console.error('Erro ao deletar produto:', error);
+        const mensagem = error.response?.data?.error || 'Não é possível excluir este produto pois existem movimentações relacionadas a ele.';
+        alert(mensagem);
     }
   };
 
@@ -106,7 +108,7 @@ const ProdutosPage = () => {
     <div className="produtos-container">
       <div className="produtos-header">
         <h1>Controle de Produtos</h1>
-        <button onClick={() => navigate('/')} className="voltar">Voltar para Página Inicial</button>
+        <button onClick={() => navigate('/menuPrincipal')} className="voltar">Voltar para o Menu</button>
       </div>
 
       <div className="actions">
