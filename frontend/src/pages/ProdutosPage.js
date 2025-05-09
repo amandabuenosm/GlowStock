@@ -6,11 +6,20 @@ const ProdutosPage = () => {
   const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
-    import ('../style/ProdutosPage.css');
     fetchProdutos();
+    import ('../style/ProdutosPage.css');
   }, []);
 
   const navigate = useNavigate();
+
+  const fetchProdutos = async () => {
+    try {
+        const response = await api.get('/produtos');
+        setProdutos(response.data);
+    } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+    }
+  };
 
   const [formulario, setForm] = useState({
     nome: '',
@@ -23,14 +32,6 @@ const ProdutosPage = () => {
   const [editId, setEditId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const fetchProdutos = async () => {
-    try {
-        const response = await api.get('/produtos');
-        setProdutos(response.data);
-    } catch (error) {
-        console.error('Erro ao buscar produtos:', error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -115,7 +116,7 @@ const ProdutosPage = () => {
         <button onClick={handleOpenDialog}>Adicionar Produto</button>
       </div>
 
-      <table>
+      <table className="dados-produtos">
         <thead>
           <tr>
             <th>Nome</th>
