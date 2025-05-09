@@ -1,6 +1,7 @@
 const funcModelMov = require('../models/movimentModel');
 
 const controllerMov = {
+    // buscar movimentações de apenas um produto
     movporproduto: (req, res) => {
         const idProd = req.params.idProd;
         funcModelMov.movporproduto(idProd, (err, results) => {
@@ -11,12 +12,13 @@ const controllerMov = {
         });
     },
 
+    // registro de movimentação
     armazenamentomovs: (req, res) => {
         const movimentacao = {
             produto_id: req.body.produto_id,
             tipo_movimentacao: req.body.tipo_movimentacao,
             quantidade: req.body.quantidade,
-            usuario_id: req.body.usuario_id 
+            usuario_id: req.body.usuario_id
         };
 
         if (!movimentacao.usuario_id) {
@@ -30,7 +32,18 @@ const controllerMov = {
             }
             res.status(201).json({ mensagem: "Movimentação registrada com sucesso." });
         });
-    }
+    },
+
+    // listar todas as movimentações
+    listarmovimentacoes: (req, res) => {
+        funcModelMov.listarmovimentacoes((err, results) => {
+            if (err) {
+                console.error("Erro ao listar movimentações:", err);
+                return res.status(500).json({ erro: "Erro ao listar movimentações." });
+            }
+            res.status(200).json(results);
+        });
+    },
 };
 
 module.exports = controllerMov;
