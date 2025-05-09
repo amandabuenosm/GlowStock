@@ -1,0 +1,36 @@
+.mov-container {
+  height: 100vh;
+  background-color: #1a8045;  
+  display: flex;
+  flex-direction: column;
+}
+
+.mov-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  margin-bottom: 30px;
+  background-color: rgb(143, 123, 230);
+}
+
+.listamovimentacoes {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.dados-mov {
+  width: 90%;
+  margin-left: 5%;
+  border-collapse: collapse;
+  background-color: rgb(192, 225, 255);
+  margin-block: 30px;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 12px;
+  text-align: center;
+}
