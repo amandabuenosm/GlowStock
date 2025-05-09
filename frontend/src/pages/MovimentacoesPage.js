@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const MovimentacoesPage = () => {
@@ -6,7 +7,10 @@ const MovimentacoesPage = () => {
 
     useEffect(() => {
         fetchMoviment();
+        import ('../style/MovimentacoesPage.css');
     }, []);
+
+    const navigate = useNavigate();
 
     const fetchMoviment = async () => {
        try {
@@ -32,17 +36,21 @@ const MovimentacoesPage = () => {
     return (
     <div className="mov-container">
         <div className="mov-header">
-            <h1>Sistema de Controle de Estoque GlowStock</h1>
+            <h1>GlowStock - Movimentações de Estoque</h1>
+            <button onClick={() => navigate('/menuPrincipal')} className="voltar">Voltar para o Menu</button>
         </div>
         <section className="listamovimentacoes">
+            <article className="header-sessao-mov">
+                <h2>Lista de Movimentações de Estoque</h2>
+            </article>
 
-            <table>
+            <table className="dados-mov">
                 <thead>
                     <tr>
                         <th>Produto</th>
                         <th>Tipo de Movimentação</th>
                         <th>Qtde Movimentada</th>
-                        <th>Data/Hora da Mov</th>
+                        <th>Data/Hora da Movimntação</th>
                         <th>Usuário</th>
                     </tr>
                 </thead>
