@@ -26,9 +26,21 @@ const controllerProd = {
 
   criarprod: async (req, res) => {
     const novoprod = req.body;
+
+    // validar campos obrigatórios
+    const cpobrigatorios = ['nome', 'codigo', 'preco', 'qtde_estoque', 'marca'];
+    const cpausentes = cpobrigatorios.filter(campo => !novoprod[campo]);
+
+    if (cpausentes.length > 0) {
+      return res.status(400).json({ error: `Campos obrigatórios faltando: ${cpausentes.join(', ')}` });
+    }
+
+    // remover o usuario_id do req.body
+    const { usuario_id, ...produtoparainsert } = novoprod;
+
     try {
-      const result = await funcModelProd.criarprod(novoprod);
-      res.status(201).json({ id: result.insertId, ...novoprod });
+      const result = await funcModelProd.criarprod(produtoparainsert);
+      res.status(201).json({ id: result.insertId, ...produtoparainsert });
     } catch (err) {
       res.status(500).json({ erro: err });
     }
@@ -64,8 +76,8 @@ const controllerProd = {
           quantidade: Math.abs(diferenca),
           usuario_id: dadoseditados.usuario_id,
         };
-  
-        await funcModelMov.registrarmov(movimentacao);
+
+        funcModelMov.registrarmov(movimentacao);
       }
   
       // atualiza produto sem o usuario_id
