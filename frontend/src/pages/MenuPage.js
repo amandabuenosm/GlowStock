@@ -1,13 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../style/MenuPage.css';
 
 const MenuPage = () => {
-    
+    const navigate = useNavigate();
+
     return (
     <div className="menu-container">
         <div className="menu-header">
             <h1>GlowStock - Menu Principal</h1>
+            <button onClick={() => navigate('/')} className="voltar">Sair</button>
         </div>
         
         <section className="modulo-menu">
