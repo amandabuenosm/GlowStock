@@ -4,13 +4,15 @@ import api from '../services/api';
 
 const MovimentacoesPage = () => {
     const [movimentacoes, setMovimentacoes] = useState([]);
+    const [formBuscaMov, setForm] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [isReading, setIsReading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchMoviment();
         import ('../style/MovimentacoesPage.css');
     }, []);
-
-    const navigate = useNavigate();
 
     const fetchMoviment = async () => {
        try {
@@ -19,6 +21,39 @@ const MovimentacoesPage = () => {
         } catch (error) {
             console.error('Erro ao buscar movimentações:', error);
         } 
+    };
+
+    // envio do formulário para buscar movimentações de um produto
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await api.get(`/movimentacoes/produto/${formBuscaMov.nome}`);
+            setMovimentacoes(response.data); 
+            setOpenDialog(false);
+        } catch (err) {
+            console.error('Erro ao buscar movimentações de um produto:', err.response?.data?.error);
+        }
+    };
+
+    // mudança nos inputs
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+    };
+
+    const handleOpenDialog = () => {
+        setIsReading(false);
+        setForm({
+        nome: '',
+        });
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
     };
 
     // formatação da data e hora da movimentação
@@ -42,6 +77,7 @@ const MovimentacoesPage = () => {
         <section className="listamovimentacoes">
             <article className="header-sessao-mov">
                 <h2>Lista de Movimentações de Estoque</h2>
+                <button onClick={handleOpenDialog}>Adicionar Produto</button>
             </article>
 
             <table className="dados-mov">
@@ -66,6 +102,28 @@ const MovimentacoesPage = () => {
                     ))}
                 </tbody>
             </table>
+
+            {openDialog && (
+                <div className="modal">
+                <div className="modal-content">
+                    <h2>{isReading} Consultar Mov por Produto</h2>
+                    <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="nome"
+                        placeholder="Nome do Produto"
+                        value={formBuscaMov.nome}
+                        onChange={handleChange}
+                        required
+                    />
+                    <div className="modal-actions">
+                        <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                        <button type="submit">{isReading}Consultar</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            )}
         </section>
     </div>
     );

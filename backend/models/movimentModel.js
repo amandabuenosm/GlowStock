@@ -17,7 +17,7 @@ const consultamov = {
         );
     },
 
-    movporproduto: (idProduto, callback) => {
+    movporproduto: (nomeProduto, callback) => {
         database.query(
             `SELECT 
                 prod.nome AS produtos,
@@ -28,11 +28,12 @@ const consultamov = {
             FROM movimentacoes mov
             JOIN usuarios users ON mov.usuario_id = users.id
             JOIN produtos prod ON mov.produto_id = prod.id
-            WHERE mov.produto_id = ?
+            WHERE prod.nome = ?
             ORDER BY mov.data_hora DESC`,
-            [idProduto], callback
+            [nomeProduto], callback
         );
     },
+
 
     listarmovimentacoes: (callback) => {
         database.query(
