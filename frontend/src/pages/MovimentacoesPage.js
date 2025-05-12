@@ -4,6 +4,7 @@ import api from '../services/api';
 
 const MovimentacoesPage = () => {
     const [movimentacoes, setMovimentacoes] = useState([]);
+    const [produtos, setProdutos] = useState([]);
     const [formBuscaMov, setForm] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [isReading, setIsReading] = useState(false);
@@ -23,15 +24,30 @@ const MovimentacoesPage = () => {
         } 
     };
 
+    const fetchProdutos = async () => {
+        try {
+            const response = await api.get('/produtos');
+            setProdutos(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar produtos:', error);
+        }
+    };
+
     // envio do formulário para buscar movimentações de um produto
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await api.get(`/movimentacoes/produto/${formBuscaMov.nome}`);
+
+            if (!response.data || response.data.length === 0) {
+                alert('Produto selecionado não teve movimentações de estoque!');
+                return;
+            }
+
             setMovimentacoes(response.data); 
             setOpenDialog(false);
         } catch (err) {
-            console.error('Erro ao buscar movimentações de um produto:', err.response?.data?.error);
+            console.error('Erro ao buscar movimentações do produto mencionado:', err);
         }
     };
 
@@ -49,6 +65,7 @@ const MovimentacoesPage = () => {
         setForm({
         nome: '',
         });
+        fetchProdutos();
         setOpenDialog(true);
     };
 
@@ -77,7 +94,8 @@ const MovimentacoesPage = () => {
         <section className="listamovimentacoes">
             <article className="header-sessao-mov">
                 <h2>Lista de Movimentações de Estoque</h2>
-                <button onClick={handleOpenDialog}>Adicionar Produto</button>
+                <button onClick={fetchMoviment}>Movimentações de Todos os Produtos</button>
+                <button onClick={handleOpenDialog}>Movimentações Por Produto</button>
             </article>
 
             <table className="dados-mov">
@@ -86,7 +104,7 @@ const MovimentacoesPage = () => {
                         <th>Produto</th>
                         <th>Tipo de Movimentação</th>
                         <th>Qtde Movimentada</th>
-                        <th>Data/Hora da Movimntação</th>
+                        <th>Data/Hora da Movimentação</th>
                         <th>Usuário</th>
                     </tr>
                 </thead>
@@ -106,20 +124,25 @@ const MovimentacoesPage = () => {
             {openDialog && (
                 <div className="modal">
                 <div className="modal-content">
-                    <h2>{isReading} Consultar Mov por Produto</h2>
+                    <h2>{isReading}Consultar Mov por Produto</h2>
                     <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="nome"
-                        placeholder="Nome do Produto"
-                        value={formBuscaMov.nome}
-                        onChange={handleChange}
-                        required
-                    />
-                    <div className="modal-actions">
-                        <button type="button" onClick={handleCloseDialog}>Cancelar</button>
-                        <button type="submit">{isReading}Consultar</button>
-                    </div>
+                        <select
+                            name="nome"
+                            value={formBuscaMov.nome}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value=""></option>
+                            {produtos.map((produto) => (
+                            <option key={produto.id} value={produto.nome}>
+                                {produto.nome}
+                            </option>
+                            ))}
+                        </select>
+                        <div className="modal-actions">
+                            <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                            <button type="submit">{isReading}Consultar</button>
+                        </div>
                     </form>
                 </div>
                 </div>
