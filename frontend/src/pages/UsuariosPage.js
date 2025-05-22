@@ -23,20 +23,88 @@ const UsuariosPage = () => {
 
     // adicionar função handleSubmit para incluir formulário de novo usuário
 
-    //   const [formulario, setForm] = useState({
-    //      variáveis para formulário
-    //   });
-    //   const [isEditing, setIsEditing] = useState(false);
-    //   const [editId, setEditId] = useState(null);
-    //   const [openDialog, setOpenDialog] = useState(false);
+    const [formulario, setForm] = useState({
+        login: '',
+        nomecomp: '',
+        senha: '',
+    });
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
 
-    // adicionar funções handleEdit e handleChange para editar dados de um usuário
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    // adicionar função handleDelete somente para excluir usuários sem movimentações de produto vinculadas a ele
+      try {
+          if (isEditing) {
+              await api.put(`/usuarios/${editId}`, formulario);  // envio de dados ao backend
+              setIsEditing(false);
+              setEditId(null);
+          } else {
+              await api.post('/usuarios', formulario);
+          }
+          fetchUsuarios();  // recarregar usuário para atualizar no frontend
+          handleCloseDialog();
+      } catch (error) {
+          console.error('Erro ao gravar dados do usuário:', error.response ? error.response.data : error);
+      }
+    };
 
-    // adicionar funções handleOpenDialog e handleCloseDialog para abrir modal de inclusão/edição de usuários
+    const handleEdit = (usuario) => {
+      setIsEditing(true);
+      setEditId(usuario.id);
+      setForm({
+        login: usuario.login,
+        nomecomp: usuario.nomecomp,
+        senha: usuario.senha,
+        status: usuario.status || '',
+      });
+      setOpenDialog(true);
+    };
 
-    // adicionar função para inativar usuários
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    };
+
+    const handleDelete = async (id) => {
+      try {
+        await api.delete(`/usuarios/${id}`);
+        fetchUsuarios();
+      } catch (error) {
+          const mensagem = error.response?.data?.error || 'Não é possível excluir este usuário pois existem movimentações de estoque vinculadas a ele.';
+          alert(mensagem);
+      }
+    };
+
+    const handleOpenDialog = () => {
+      setIsEditing(false);
+      setEditId(null);
+      setForm({
+        login: '',
+        nomecomp: '',
+        senha: '',
+      });
+      setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+      setOpenDialog(false);
+    };
+  
+    // // adicionar função para inativar usuários
+    const handlePutStatus = async (id, currentStatus) => {
+      const novostatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
+      try {
+        await api.put(`/usuarios/${id}`, { status: novostatus });
+        fetchUsuarios();
+      } catch (error) {
+        console.error("Erro ao atualizar status:", error);
+      }
+    };
 
     return (
     <div className="usuarios-container">
@@ -46,7 +114,7 @@ const UsuariosPage = () => {
       </div>
 
       <div className="actions">
-        <button onClick>Adicionar Novo Usuário</button>
+        <button onClick={handleOpenDialog}>Adicionar Novo Usuário</button>
       </div>
 
       <table className="dados-usuarios">
@@ -65,14 +133,52 @@ const UsuariosPage = () => {
               <td>{usuario.nomecomp}</td>
               <td>{usuario.status}</td>
               <td>
-                <button onClick>Editar</button>
-                <button onClick>Excluir</button>
-                <button onClick>Inativar</button>
+                <button onClick={() => handleEdit(usuario)}>Editar</button>
+                <button onClick={() => handleDelete(usuario.id)}>Excluir</button>
+                <button onClick={() => handlePutStatus(usuario.id, usuario.status)}>{usuario.status === 'ativo' ? 'Inativar' : 'Ativar'}</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {openDialog && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{isEditing ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="login"
+                placeholder="Login do Usuário"
+                value={formulario.login}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="nomecomp"
+                placeholder="Nome Completo do Usuário"
+                value={formulario.nomecomp}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="password"
+                name="senha"
+                placeholder="Senha do Usuário"
+                value={formulario.senha}
+                onChange={handleChange}
+                required
+              />
+              <div className="modal-actions">
+                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>        
     );
 };

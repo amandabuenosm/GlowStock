@@ -7,6 +7,7 @@ rota.get('/:id', funcController.buscapeloid);
 rota.post('/login', funcController.buscalogin);
 rota.post('/', funcController.criarusuario);
 rota.put('/:id', funcController.editarusuario);
+rota.put('/:id', funcController.trocarstatus);
 rota.delete('/:id', funcController.deletarusuario);
 
 module.exports = rota;

@@ -16,6 +16,9 @@ const crudusuarios = {
     editarusuario: (id, usuarioEdit, callback) => {
         database.query('UPDATE usuarios SET ? WHERE id = ?', [usuarioEdit, id], callback);
     },
+    trocarstatus: (id, status, callback) => {
+        database.query('UPDATE usuarios SET status = ? WHERE id = ?', [status, id], callback);
+    },
     deletarusuario: (id, callback) => {
         database.query('DELETE FROM usuarios WHERE id = ?', [id], callback);
     },

@@ -40,6 +40,14 @@ const controllerUsuario = {
             res.json({ mensagem: 'Usuário atualizado com sucesso!' });
         });
     },
+    trocarstatus: (req, res) => {
+        const id = req.params.id;
+        const { status } = req.body;
+        funcModelUser.trocarstatus(id, status, (err) => {
+            if (err) return res.status(500).json({ erro: err });
+            res.json({ mensagem: 'Status do usuário atualizado com sucesso!' });
+        });
+    },
     deletarusuario: (req, res) => { 
         const id = req.params.id;
         funcModelUser.deletarusuario(id, (err) => {
