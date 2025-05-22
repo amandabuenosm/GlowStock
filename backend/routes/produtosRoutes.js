@@ -1,5 +1,3 @@
-/** definir rotas da API */
-
 const express = require('express');
 const rota = express.Router();
 const funcController = require('../controllers/produtosController');

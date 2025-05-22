@@ -3,8 +3,8 @@ const funcModelMov = require('../models/movimentModel');
 const controllerMov = {
     // buscar movimentações de apenas um produto
     movporproduto: (req, res) => {
-        const idProd = req.params.idProd;
-        funcModelMov.movporproduto(idProd, (err, results) => {
+        const nomeProd = req.params.nomeProd;
+        funcModelMov.movporproduto(nomeProd, (err, results) => {
             if (err) {
                 return res.status(500).json({ erro: "Erro na busca de movimentações." });
             }
