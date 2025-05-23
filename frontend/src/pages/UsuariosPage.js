@@ -7,7 +7,7 @@ const UsuariosPage = () => {
 
     useEffect(() => {
         fetchUsuarios();
-        // import ('../style/UsuariosPage.css');
+        import ('../style/UsuariosPage.css');
     }, []);
 
     const navigate = useNavigate();
@@ -20,9 +20,7 @@ const UsuariosPage = () => {
             console.error('Erro ao buscar usuários:', error);
         }
     };
-
-    // adicionar função handleSubmit para incluir formulário de novo usuário
-
+    
     const [formulario, setForm] = useState({
         login: '',
         nomecomp: '',
@@ -37,13 +35,13 @@ const UsuariosPage = () => {
 
       try {
           if (isEditing) {
-              await api.put(`/usuarios/${editId}`, formulario);  // envio de dados ao backend
+              await api.put(`/usuarios/${editId}`, formulario);
               setIsEditing(false);
               setEditId(null);
           } else {
               await api.post('/usuarios', formulario);
           }
-          fetchUsuarios();  // recarregar usuário para atualizar no frontend
+          fetchUsuarios(); 
           handleCloseDialog();
       } catch (error) {
           console.error('Erro ao gravar dados do usuário:', error.response ? error.response.data : error);
@@ -95,7 +93,6 @@ const UsuariosPage = () => {
       setOpenDialog(false);
     };
   
-    // // adicionar função para inativar usuários
     const handlePutStatus = async (id, currentStatus) => {
       const novostatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
       try {
