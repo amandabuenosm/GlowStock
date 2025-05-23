@@ -20,7 +20,7 @@ const UsuariosPage = () => {
             console.error('Erro ao buscar usuários:', error);
         }
     };
-
+    
     const [formulario, setForm] = useState({
         login: '',
         nomecomp: '',
@@ -35,13 +35,13 @@ const UsuariosPage = () => {
 
       try {
           if (isEditing) {
-              await api.put(`/usuarios/${editId}`, formulario);  // envio de dados ao backend
+              await api.put(`/usuarios/${editId}`, formulario);
               setIsEditing(false);
               setEditId(null);
           } else {
               await api.post('/usuarios', formulario);
           }
-          fetchUsuarios();  // recarregar usuário para atualizar no frontend
+          fetchUsuarios(); 
           handleCloseDialog();
       } catch (error) {
           console.error('Erro ao gravar dados do usuário:', error.response ? error.response.data : error);
