@@ -1,21 +1,34 @@
 .login-container {
     height: 100vh;
-    background-color: pink;
+    background-image: url(./wallpaper.jpeg);
+    background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
 }
 
 .login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 40px;
-    background-color: cyan;
+    margin-bottom: 30px;
+    background-color: #3B3973;
+    color: white;
+}
+
+.login-header h1 {
+    font-family: 'Tangerine';
+    font-size: 60px;
+    margin: auto;
 }
 
 .modulo-login {
     width: 300px;
-    background-color: rgb(88, 8, 95);
-    border-radius: 10px;
+    background-color: #9385ada8;
+    border-radius: 20px;
     height: 45%;
-    padding: 30px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +39,11 @@
     border-bottom: 1px;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.header-modulo-login h2 {
+    font-family: 'Delius Swash Caps';
+    font-size: 25px;
 }
 
 form, button[type="submit"] {
@@ -43,7 +61,7 @@ input[type="text"], input[type="password"] {
 }
 
 button[type="submit"] {
-    background-color: rgb(85 63 207);
+    background-color: #7D305B;
     color: white;
     display: flex;
     justify-content: center;
@@ -54,5 +72,5 @@ button[type="submit"] {
 }
 
 a {
-    color: white;
+    color: black;
 }
