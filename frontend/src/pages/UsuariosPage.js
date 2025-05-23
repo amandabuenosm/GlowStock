@@ -7,7 +7,7 @@ const UsuariosPage = () => {
 
     useEffect(() => {
         fetchUsuarios();
-        // import ('../style/UsuariosPage.css');
+        import ('../style/UsuariosPage.css');
     }, []);
 
     const navigate = useNavigate();
@@ -20,8 +20,6 @@ const UsuariosPage = () => {
             console.error('Erro ao buscar usuários:', error);
         }
     };
-
-    // adicionar função handleSubmit para incluir formulário de novo usuário
 
     const [formulario, setForm] = useState({
         login: '',
@@ -95,7 +93,6 @@ const UsuariosPage = () => {
       setOpenDialog(false);
     };
   
-    // // adicionar função para inativar usuários
     const handlePutStatus = async (id, currentStatus) => {
       const novostatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
       try {
@@ -104,6 +101,11 @@ const UsuariosPage = () => {
       } catch (error) {
         console.error("Erro ao atualizar status:", error);
       }
+    };
+
+    const formalize = (string) => {
+        if (!string) return '';
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     };
 
     return (
@@ -131,7 +133,7 @@ const UsuariosPage = () => {
             <tr key={usuario.id}>
               <td>{usuario.login}</td>
               <td>{usuario.nomecomp}</td>
-              <td>{usuario.status}</td>
+              <td>{formalize(usuario.status)}</td>
               <td>
                 <button onClick={() => handleEdit(usuario)}>Editar</button>
                 <button onClick={() => handleDelete(usuario.id)}>Excluir</button>

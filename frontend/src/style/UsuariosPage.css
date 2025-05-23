@@ -1,0 +1,72 @@
+.usuarios-container {
+  height: 100vh;
+  background-color: #381733;  
+  display: flex;
+  flex-direction: column;
+}
+
+.usuarios-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  margin-bottom: 30px;
+  background-color: rgb(64, 121, 87);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.dados-usuarios {
+  width: 90%;
+  margin-left: 5%;
+  border-collapse: collapse;
+  background-color: rgb(209, 102, 102);
+  margin-bottom: 40px;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 12px;
+  text-align: center;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 0 8px;
+}
+
+button.voltar {
+  padding: 20px;
+  margin: 14px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 6px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

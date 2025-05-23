@@ -136,8 +136,8 @@ const ProdutosPage = () => {
               <td>{produto.qtde_estoque}</td>
               <td>{produto.marca}</td>
               <td>
-                <button onClick={() => handleEdit(produto)}>Editar</button>
-                <button onClick={() => handleDelete(produto.id)} className="danger">Excluir</button>
+                <button type="edit" onClick={() => handleEdit(produto)}>Editar</button>
+                <button type="delete" onClick={() => handleDelete(produto.id)}>Excluir</button>
               </td>
             </tr>
           ))}
@@ -190,7 +190,7 @@ const ProdutosPage = () => {
                 required
               />
               <div className="modal-actions">
-                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
                 <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
               </div>
             </form>
