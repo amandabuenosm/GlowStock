@@ -174,7 +174,7 @@ const UsuariosPage = () => {
                 required
               />
               <div className="modal-actions">
-                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
                 <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
               </div>
             </form>
