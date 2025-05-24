@@ -41,11 +41,12 @@ CREATE TABLE IF NOT EXISTS usuarios (
 ---------------------------------------------
 
 USE `lojacosmeticos`;
-INSERT INTO usuarios (login, nomecomp, senha) VALUES
-('admin', 'Administrador do Sistema', 'monolith'),
-('pnunes', 'Patricia Nunes', 'yearzero'),
-('mgomes', 'Miriam Gomes', 'reinraus');
-
+INSERT INTO `usuarios` VALUES 
+(1,'admin','Administrador do Sistema','monolith','ativo'),
+(2,'pnunes','Patricia Nunes','yearzero','ativo'),
+(3,'mgomes','Miriam Gomes','reinraus','ativo'),
+(4,'tcosta','Thiago Costa','walkaway','ativo'),
+(5,'sferreira','Sandro Ferreira','heavenandhell','ativo');
 ---------------------------------------------
 
 USE `lojacosmeticos`;
