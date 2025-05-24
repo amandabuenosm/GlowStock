@@ -93,7 +93,6 @@ const MovimentacoesPage = () => {
         </div>
         <section className="listamovimentacoes">
             <article className="header-sessao-mov">
-                <h2>Lista de Movimentações de Estoque</h2>
                 <button onClick={fetchMoviment}>Movimentações de Todos os Produtos</button>
                 <button onClick={handleOpenDialog}>Movimentações Por Produto</button>
             </article>
@@ -140,7 +139,7 @@ const MovimentacoesPage = () => {
                             ))}
                         </select>
                         <div className="modal-actions">
-                            <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                            <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
                             <button type="submit">{isReading}Consultar</button>
                         </div>
                     </form>

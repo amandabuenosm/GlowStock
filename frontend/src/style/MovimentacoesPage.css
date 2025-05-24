@@ -1,6 +1,8 @@
 .mov-container {
   height: 100vh;
-  background-color: #1a8045;  
+  background-image: url(./wallpaper.jpeg);
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
 }
@@ -8,9 +10,27 @@
 .mov-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 40px;
   margin-bottom: 30px;
-  background-color: rgb(143, 123, 230);
+  background-color: #3B3973;
+  color: white;
+}
+
+.mov-header h1 {
+  font-family: 'Tangerine';
+  font-size: 60px;
+  margin: auto;
+}
+
+button.voltar {
+  padding: 20px;
+  margin: 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #9385AD;
+  font-size: large;
+  color: black;
 }
 
 .listamovimentacoes {
@@ -18,15 +38,31 @@
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  margin-bottom: 20px;
+}
+
+.header-sessao-mov {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.header-sessao-mov button {  
+  padding: 8px 12px;
+  margin: 0 8px;
+  height: 5vh;
+  border-radius: 6px;
+  border: none;
+  background-color: #7D305B;
+  color: white;
+  font-size: large;
 }
 
 .dados-mov {
   width: 90%;
   margin-left: 5%;
   border-collapse: collapse;
-  background-color: rgb(192, 225, 255);
-  margin-block: 30px;
+  background-color: #9385AD;
+  margin-bottom: 40px;
 }
 
 th, td {
@@ -37,8 +73,6 @@ th, td {
 
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.6);
@@ -48,17 +82,45 @@ th, td {
 }
 
 .modal-content {
-  background-color: #fff;
-  padding: 30px;
+  background-color: #E69EAC;
+  padding-block: 20px 10px;
   border-radius: 6px;
   width: 400px;
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: 12px;
+}
+
+.modal-content h2 {
+  font-family: 'Delius Swash Caps';
+  font-size: 25px;
 }
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.modal-actions button {
+  height: 6vh;
+  border: none;
+  width: 100%;
+  border-radius: 6px;
+  font-size: large;
+}
+
+.modal-actions button[type="cancel"] {
+  background-color: #a30000;
+  color: white;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #074e10;
+  color: white;
+}
+
+select {
+  height: 2rem;
 }

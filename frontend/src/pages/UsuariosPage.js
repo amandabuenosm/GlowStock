@@ -147,7 +147,7 @@ const UsuariosPage = () => {
       {openDialog && (
         <div className="modal">
           <div className="modal-content">
-            <h2>{isEditing ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
+            <h2>{isEditing}Criar Usuário</h2>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -174,7 +174,7 @@ const UsuariosPage = () => {
                 required
               />
               <div className="modal-actions">
-                <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
                 <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
               </div>
             </form>

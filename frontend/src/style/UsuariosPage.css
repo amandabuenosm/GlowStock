@@ -95,6 +95,11 @@ button.voltar {
   flex-direction: column;
 }
 
+.modal-content h2 {
+  font-family: 'Delius Swash Caps';
+  font-size: 25px;
+}
+
 .modal-actions {
   display: flex;
   justify-content: center;
