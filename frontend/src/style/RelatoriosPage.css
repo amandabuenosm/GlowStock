@@ -1,0 +1,78 @@
+.relatorios-container {
+    height: 100vh;
+    background-image: url(./wallpaper.jpeg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.relatorios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    margin-bottom: 30px;
+    background-color: #3B3973;
+    color: white;
+}    
+
+.relatorios-header h1 {
+    font-family: 'Tangerine';
+    font-size: 60px;
+    margin: auto;
+}
+
+.relatorios-header button {
+    padding: 20px;
+    margin: 14px;
+    border-radius: 6px;
+    border: none;
+    background-color: #9385AD;
+    font-size: large;
+    color: black;
+}
+
+.header-modulo-relatorios h2 {
+    font-family: 'Delius Swash Caps';
+    font-size: 25px;
+    color: white;
+    text-align: center;
+}
+
+.modulo-relatorios {
+    background-color: #7d305cbb;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    width: 60%;
+    flex-direction: column;
+    margin: auto;
+}    
+
+.sessoes {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+    justify-content: center;
+    font-family: 'Delius Swash Caps';
+    font-size: large;
+}
+
+.sessoes h3 {
+    text-align: center;
+}
+
+.relatorios-usuarios, .relatorios-produtos,
+.relatorios-movimentacao {
+    flex-basis: calc(30% - 15px);
+    text-align: center;
+    padding: 20px;
+    background-color: #9385adbd;
+    border-radius: 25px;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    flex-direction: column;
+}    
