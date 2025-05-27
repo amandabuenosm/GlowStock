@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import MenuPage from './pages/MenuPage';
 import MovimentacoesPage from './pages/MovimentacoesPage';
 import UsuariosPage from './pages/UsuariosPage';
+import RelatoriosPage from './pages/RelatoriosPage';
 
 const AppRouter = () => {
   return (
@@ -17,6 +18,7 @@ const AppRouter = () => {
         <Route path="/movimentacoes" element={<MovimentacoesPage />} />
         <Route path="/produtos" element={<ProdutosPage/>} />
         <Route path="/usuarios" element={<UsuariosPage/>} />
+        <Route path="/relatorios" element={<RelatoriosPage/>} />
       </Routes>
     </Router>
   );
