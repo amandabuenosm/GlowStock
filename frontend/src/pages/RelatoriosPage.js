@@ -9,7 +9,7 @@ const RelatoriosPage = () => {
     const navigate = useNavigate();
 
     const [usuarios, setUsuarios] = useState([]);
-    const [filtroStatus, setFiltroStatus] = useState('');
+    const [filterByStatus, setFilterStatus] = useState('');
 
     const listarusuarios = async () => {
         try {
@@ -29,15 +29,13 @@ const RelatoriosPage = () => {
         fetchData();
     }, []);
 
+    // modal de filtros dos usuários
+    const [modalUsuarios, setModalUsuarios] = useState(false);
+    const openModalUsuarios = () => setModalUsuarios(true);
 
-    const [modalUsuariosAberto, setModalUsuariosAberto] = useState(false);
-
-    const abrirModalUsuarios = () => setModalUsuariosAberto(true);
-
-    // criar modal de filtros dos usuários
-    const gerarRelatorioUsuarios = () => {
+    const criaRelatorioUsuarios = () => {
         const usuariosFiltrados = usuarios.filter(
-            u => filtroStatus === '' || u.status === filtroStatus
+            u => filterByStatus === '' || u.status === filterByStatus
         );
 
         const formalize = (string) => {
@@ -51,7 +49,7 @@ const RelatoriosPage = () => {
         doc.text('Relatório de Usuários - GlowStock', 65, 20);
 
         doc.setFontSize(14);
-        doc.text(`Status filtrado: ${filtroStatus || 'Todos'}`, 14, 35);
+        doc.text(`Status filtrado: ${filterByStatus || 'Todos'}`, 14, 35);
 
         autoTable(doc, {
             startY: 40,
@@ -74,10 +72,8 @@ const RelatoriosPage = () => {
             },
             margin: { top: 30 },
         });
-
         doc.save('relatorio_usuarios.pdf');
     };
-
 
     return (
     <div className="relatorios-container">
@@ -92,7 +88,7 @@ const RelatoriosPage = () => {
             </article>
             
             <article className="sessoes">
-                <Link to="#" onClick={abrirModalUsuarios} className="relatorios-usuarios">
+                <Link to="#" onClick={openModalUsuarios} className="relatorios-usuarios">
                     <h3>Usuários</h3>
                     <h5>Emita relatórios contendo dados dos usuários do sistema GlowStock por aqui!</h5>
                 </Link>
@@ -109,14 +105,14 @@ const RelatoriosPage = () => {
             </article>
         </section>
 
-        {modalUsuariosAberto && (
+        {modalUsuarios && (
             <div className="modalusuarios">
                 <div className="modal-content">
                     <h2>Filtros - Relatório de Usuários</h2>
 
                     <label>
                         Status: 
-                        <select value={filtroStatus} onChange={e => setFiltroStatus(e.target.value)}>
+                        <select value={filterByStatus} onChange={e => setFilterStatus(e.target.value)}>
                             <option value="">Todos</option>
                             <option value="ativo">Ativo</option>
                             <option value="inativo">Inativo</option>
@@ -124,17 +120,15 @@ const RelatoriosPage = () => {
                     </label>
 
                     <div className="modal-buttons">
-                        <button type="cancel" onClick={() => setModalUsuariosAberto(false)}>Cancelar</button>
+                        <button type="cancel" onClick={() => setModalUsuarios(false)}>Cancelar</button>
                         <button type="submit" onClick={() => {
-                            gerarRelatorioUsuarios();
-                            setModalUsuariosAberto(false);
+                            criaRelatorioUsuarios();
+                            setModalUsuarios(false);
                         }}>Gerar PDF</button>
                     </div>
                 </div>
             </div>
         )}
-
-
     </div>
     );
 }
