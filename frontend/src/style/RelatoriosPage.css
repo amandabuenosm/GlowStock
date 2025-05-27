@@ -75,4 +75,65 @@
     color: black;
     display: flex;
     flex-direction: column;
-}    
+}
+
+.modalusuarios {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #E69EAC;
+  padding-block: 20px 10px;
+  border-radius: 6px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.modal-content h2 {
+  font-family: 'Delius Swash Caps';
+  font-size: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.modal-buttons button {
+  height: 6vh;
+  border: none;
+  width: 100%;
+  border-radius: 6px;
+  font-size: large;
+}
+
+.modal-buttons button[type="cancel"] {
+  background-color: #a30000;
+  color: white;
+}
+
+.modal-buttons button[type="submit"] {
+  background-color: #074e10;
+  color: white;
+}
+
+label {
+    font-size: larger;
+    font-weight: bold;
+    padding-top: 35px;
+}
+
+select {
+    margin-left: 10px;
+    height: 2rem;
+}
