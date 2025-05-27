@@ -8,6 +8,15 @@ const LoginPage = () => {
         senha: '',
     });
 
+    const [novoUsuarioForm, setNovoUsuario] = useState({
+        login: '',
+        nomecomp: '',
+        senha: '',
+    });
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+
     // envio do formulário
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +33,23 @@ const LoginPage = () => {
         }
     }
 
+    const handleSubmitNovoUsuario = async (e) => {
+      e.preventDefault();
+
+      try {
+          if (isEditing) {
+              await api.put(`/usuarios/${editId}`, novoUsuarioForm);
+              setIsEditing(false);
+              setEditId(null);
+          } else {
+              await api.post('/usuarios', novoUsuarioForm);
+          }
+          handleCloseDialog();
+      } catch (error) {
+          console.error('Erro ao gravar dados do usuário:', error.response ? error.response.data : error);
+      }
+    };
+
     // mudança nos inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,6 +57,30 @@ const LoginPage = () => {
           ...prev,
           [name]: value,
         }));
+    };
+
+    // mudança nos inputs
+    const handleChangeNovoUsuario = (e) => {
+        const { name, value } = e.target;
+        setNovoUsuario((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+    };
+
+    const handleOpenDialog = () => {
+      setIsEditing(false);
+      setEditId(null);
+      setNovoUsuario({
+        login: '',
+        nomecomp: '',
+        senha: '',
+      });
+      setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+      setOpenDialog(false);
     };
 
     return (
@@ -52,9 +102,46 @@ const LoginPage = () => {
                 <button type="submit">Acessar</button>
             </form>
 
-            <a link href="/" target="blank">Não tem uma conta? Registre-se!</a>
+            <a href="#" onClick={handleOpenDialog}>Não tem uma conta? Registre-se!</a>
         </section>
 
+        {openDialog && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{isEditing}Criar Novo Usuário</h2>
+            <form onSubmit={handleSubmitNovoUsuario}>
+              <input
+                type="text"
+                name="login"
+                placeholder="Login do Usuário"
+                value={novoUsuarioForm.login}
+                onChange={handleChangeNovoUsuario}
+                required
+              />
+              <input
+                type="text"
+                name="nomecomp"
+                placeholder="Nome Completo do Usuário"
+                value={novoUsuarioForm.nomecomp}
+                onChange={handleChangeNovoUsuario}
+                required
+              />
+              <input
+                type="password"
+                name="senha"
+                placeholder="Senha do Usuário"
+                value={novoUsuarioForm.senha}
+                onChange={handleChangeNovoUsuario}
+                required
+              />
+              <div className="modal-actions">
+                <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="submit">{isEditing}Salvar Novo Usuário</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        )}
     </div>
     );
 };
