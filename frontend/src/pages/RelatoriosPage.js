@@ -3,11 +3,15 @@ import { useState, useEffect } from 'react';
 import '../style/RelatoriosPage.css';
 import api from '../services/api';
 import RelatorioUsuarios from './report/RelatorioUsuarios';
+import RelatorioProdutos from './report/RelatoriosProdutos';
 
 const RelatoriosPage = () => {
     const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [modaldeusuarios, openModalusuarios] = useState(false);
+
+    const [produtos, setProdutos] = useState([]);
+    const [modaldeprodutos, openModalprodutos] = useState(false);
 
     const listarusuarios = async () => {
         try {
@@ -19,10 +23,23 @@ const RelatoriosPage = () => {
         }
     };
 
+    const listarprodutos = async () => {
+        try {
+            const response = await api.get('/produtos');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar produtos:', error);
+            return [];
+        }
+    };
+
     useEffect(() => {
         async function fetchData() {
-            const dados = await listarusuarios();
-            setUsuarios(dados);
+            const dadosusuarios = await listarusuarios();
+            setUsuarios(dadosusuarios);
+
+            const dadosprodutos = await listarprodutos();
+            setProdutos(dadosprodutos);
         }
         fetchData();
     }, []);
@@ -45,15 +62,15 @@ const RelatoriosPage = () => {
                         <h5>Emita relatórios contendo dados dos usuários do sistema GlowStock por aqui!</h5>
                     </Link>
 
-                    <Link to="#" className="relatorios-produtos">
+                    <Link to="#" onClick={() => openModalprodutos(true)} className="relatorios-produtos">
                         <h3>Produtos</h3>
                         <h5>Emita relatórios contendo dados dos produtos e suas quantidades em estoque por aqui!</h5>
                     </Link>
 
-                    <Link to="#" className="relatorios-movimentacao">
+                    {/* <Link to="#" className="relatorios-movimentacao">
                         <h3>Movimentações</h3>
                         <h5>Emita relatórios contendo dados de movimentações de estoque de produtos do GlowStock por aqui!</h5>
-                    </Link>
+                    </Link> */}
                 </article>
             </section>
 
@@ -61,6 +78,13 @@ const RelatoriosPage = () => {
                 <RelatorioUsuarios
                     usuarios={usuarios}
                     onClose={() => openModalusuarios(false)}
+                />
+            )}
+
+            {modaldeprodutos && (
+                <RelatorioProdutos
+                    produtos={produtos}
+                    onClose={() => openModalprodutos(false)}
                 />
             )}
         </div>
