@@ -1,13 +1,5 @@
-Esse projeto consiste em um sistema de Gestão de Estoque para uma loja de cosméticos, útil para gerenciamento de armazenamento de produtos, permitindo controle de entradas/saídas e atualizações de forma simples. O sistema tem funcionalidades de CRUD, com o uso dos métodos GET, GET BY ID, UPDATE, POST E DELETE. Para facilitar, a documentação de APIs para teste do backend pode ser feita com Swagger. A aplicação está sendo feita com Node.js e React, e a modelagem de banco de dados está sendo realizada no MySQL Workbench. 
+Este projeto consiste em um sistema completo de Gestão de Estoque para uma loja de cosméticos, destinado ao gerenciamento eficiente do armazenamento de produtos. A aplicação permite o controle de entradas, saídas e atualizações de estoque de maneira simples e intuitiva, com todas as funcionalidades CRUD implementadas para produtos, usuários e movimentações de estoque.
 
-Atualmente, o sistema está em fase de desenvolvimento e visa oferecer uma interface ótima, com funções voltadas para o cotidiano de estabelecimentos do ramo de beleza. No entanto, as funções CRUD de produtos, usuários e listagem de movimentações de estoque está concluído, o desenvolvimento complexo do sistema ainda está em andamento. Ainda assim, é possível fazer os testes com o CRUD de produtos, usuários e busca de movimentações.
+Desenvolvido com Node.js no backend e React no frontend, o sistema utiliza MySQL como banco de dados, cuja modelagem foi realizada no MySQL Workbench. O módulo de relatórios encontra-se em fase final de desenvolvimento, com foco na otimização da performance dos filtros e aprimoramento da experiência do usuário.
 
-Configuração do Ambiente e Como Testar o CRUD de Produtos:
-
-1. Após clonar o projeto, acesse a pasta 'backend'
-2. Renomeie o arquivo '.env.example' para '.env'
-3. Preencha o arquivo '.env' com suas informações reais de conexão com o banco de dados
-4. Faça a configuração do MySQL Workbench, montando o banco que está na pasta 'backend', no arquivo 'sql.txt' com os comandos necessários.
-5. Após montar o banco, no terminal, dirija-se às pastas 'backend' e 'frontend' e baixe os módulos extras com o comando "npm install".
-6. Com os módulos instalados, ainda no terminal, dirija-se a pasta do backend e rode o backend do projeto com o comando "npm start", e confira se a conexão com o banco foi feita.
-7. Se for feita a conexão com o banco de dados, dirija-se a pasta do frontend e rode o frontend do projeto com o comando "npm start". Desse modo, irá abrir sozinho no navegador a aplicação. 
+Atualmente, todas as operações CRUD estão concluídas e plenamente funcionais, possibilitando testes e utilização das funcionalidades básicas com estabilidade e eficiência. O módulo de relatórios, embora ainda em desenvolvimento, está em fase avançada de finalização. Este sistema está estruturado para atender às demandas operacionais de estabelecimentos do setor de beleza, com uma interface amigável e funcionalidades robustas para controle de estoque e gerenciamento de usuários.
