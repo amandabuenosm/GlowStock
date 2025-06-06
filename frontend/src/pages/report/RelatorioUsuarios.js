@@ -53,14 +53,20 @@ const RelatorioUsuarios = ({ usuarios, onClose }) => {
             <div className="modal-content">
                 <h2>Filtros para Usuários</h2>
 
-                <label>
+                {/* -------------------------------------------- */}
+                {/* ajustar filtro de status para deixar semelhante ao
+                filtro de produtos no relatório de movimentações */}
+                {/* -------------------------------------------- */}
+
+
+                {/* <label>
                     Status:
                     <select value={filterByStatus} onChange={e => setFilterStatus(e.target.value)}>
                         <option value="">Todos</option>
                         <option value="ativo">Ativo</option>
                         <option value="inativo">Inativo</option>
                     </select>
-                </label>
+                </label> */}
 
                 <div className="modal-buttons">
                     <button type="cancel" onClick={onClose}>Cancelar</button>
