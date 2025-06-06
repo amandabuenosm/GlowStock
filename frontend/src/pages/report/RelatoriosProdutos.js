@@ -69,8 +69,14 @@ const RelatorioProdutos = ({ produtos, onClose }) => {
         <div className="modal">
             <div className="modal-content">
                 <h2>Filtros para Produtos</h2>
+                
 
-                <label>
+                {/* -------------------------------------------- */}
+                {/* ajustar filtro de marca para deixar semelhante ao
+                filtro de produtos no relatório de movimentações */}
+                {/* -------------------------------------------- */}
+
+                {/* <label>
                     Marca:
                     <input
                         value={filterByMark}
@@ -82,7 +88,7 @@ const RelatorioProdutos = ({ produtos, onClose }) => {
                             <option key={index} value={marca} />
                         ))}
                     </datalist>
-                </label>
+                </label> */}
 
                 <label>
                     Preço Máximo:
