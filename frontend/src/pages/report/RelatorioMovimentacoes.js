@@ -1,16 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import api from '../../services/api';
 import '../../style/RelatoriosPage.css';
 
-const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) => {
-    const [filterByProduct, setFilterByProduct] = useState('');
+const RelatorioMovimentacoes = ({ movimentacoes, onClose }) => {
+
+    const [filterByProduct, setFilterByProduct] = useState(null);
     const [filterByTipoMov, setFilterByTipoMov] = useState('');
     const [filterByUser, setFilterByUser] = useState('');
-    
+    const [produtos, setProdutos] = useState([]);
+
+    useEffect(() => {
+        async function fetchProdutos() {
+            try {
+                const response = await api.get('/produtos');
+                const options = response.data.map(produto => ({
+                    value: produto.nome,
+                    label: produto.nome
+                }));
+                setProdutos([{ value: '', label: 'Todos' }, ...options]);
+            } catch (error) {
+                console.error('Erro ao buscar produtos:', error);
+            }
+        }
+        fetchProdutos();
+    }, []);
+
     const criarelatoriomovimentacoes = () => {
+        const produtoselecionado = filterByProduct?.value || '';
+
         const movimentacoesfiltradas = movimentacoes.filter(moviments =>
-            (filterByProduct === '' || (moviments.produtos ?? '').toLowerCase().includes(filterByProduct.trim().toLowerCase())) &&
+            (produtoselecionado === '' || (moviments.produtos ?? '').toLowerCase().includes(produtoselecionado.toLowerCase())) &&
             (filterByTipoMov === '' || moviments.tipo_movimentacao === filterByTipoMov) &&
             (filterByUser === '' || (moviments.usuarios ?? '').toLowerCase().includes(filterByUser.trim().toLowerCase()))
         );
@@ -30,7 +52,7 @@ const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) 
         doc.text('Relatório de Movimentações de Estoque - GlowStock', 37.5, 20);
 
         doc.setFontSize(13);
-        doc.text(`Produto filtrado: ${formalize(filterByProduct || 'Todos')}`, 14, 35);
+        doc.text(`Produto filtrado: ${formalize(produtoselecionado || 'Todos')}`, 14, 35);
         doc.text(`Tipo de Movimentação filtrado: ${formalize(filterByTipoMov || 'Todos')}`, 14, 40);
         doc.text(`Usuário filtrado: ${formalize(filterByUser || 'Nenhum')}`, 14, 45);
 
@@ -38,7 +60,7 @@ const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) 
             startY: 50,
             head: [['Produto', 'Saída/Entrada', 'Qtde Movimentada', 'Data/Hora da Movimentação', 'Usuário Responsável']],
             body: movimentacoesfiltradas.map(moviments => [
-                moviments.produtos, // agora é só string
+                moviments.produtos,
                 formalize(moviments.tipo_movimentacao),
                 moviments.quantidade,
                 formatadata(moviments.data_hora),
@@ -61,15 +83,8 @@ const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) 
             },
             margin: { top: 30 },
         });
+
         doc.save('relatorioDeMovimentacoes.pdf');
-    };
-
-    const handleProdutoInput = (e) => {
-        setFilterByProduct(e.target.value);
-    };
-
-    const handleUsuarioInput = (e) => {
-        setFilterByUser(e.target.value);
     };
 
     return (
@@ -77,32 +92,51 @@ const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) 
             <div className="modal-content">
                 <h2>Filtros para Movimentações</h2>
 
-                <label>
-                    Produto:
-                    <input
+                <div className="seletorproduto" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <label style={{ minWidth: '100px' }}>Produto:</label>
+                    <Select
+                        id="produto"
+                        className="seletorDigit"
+                        options={produtos}
                         value={filterByProduct}
-                        onChange={handleProdutoInput}
-                        placeholder="Digite o produto completo com acentos"
+                        onChange={setFilterByProduct}
+                        placeholder="Digite ou selecione um produto"
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                width: '200px',
+                                fontSize: '13px',
+                            })
+                        }}
                     />
-                </label>
+                </div>
 
-                <label>
+
+{/* ------------------------------------------------------- */}
+{/* ajustar filtro para ficar no mesmo design que os outros */}
+{/* ------------------------------------------------------- */}
+                
+                {/* <label>
                     Tipo de Movimentação:
                     <select value={filterByTipoMov} onChange={e => setFilterByTipoMov(e.target.value)}>
                         <option value="">Todos</option>
                         <option value="saida">Saída</option>
                         <option value="entrada">Entrada</option>
                     </select>
-                </label>
+                </label> */}
 
-                <label>
+
+{/* --------------------------------------------------------------- */}
+{/* ajustar filtro de usuários para se assemelhar com o de produtos */}
+{/* --------------------------------------------------------------- */}
+                {/* <label>
                     Usuário:
                     <input
                         value={filterByUser}
-                        onChange={handleUsuarioInput}
+                        onChange={e => setFilterByUser(e.target.value)}
                         placeholder="Digite o nome completo do usuário com acentos"
                     />
-                </label>
+                </label> */}
 
                 <div className="modal-buttons">
                     <button type="cancel" onClick={onClose}>Cancelar</button>
@@ -114,6 +148,6 @@ const RelatorioMovimentacoes = ({ movimentacoes, produtos, usuarios, onClose }) 
             </div>
         </div>
     );
-}
+};
 
 export default RelatorioMovimentacoes;
