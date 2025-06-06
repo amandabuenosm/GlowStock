@@ -4,6 +4,7 @@ import '../style/RelatoriosPage.css';
 import api from '../services/api';
 import RelatorioUsuarios from './report/RelatorioUsuarios';
 import RelatorioProdutos from './report/RelatoriosProdutos';
+import RelatorioMovimentacoes from './report/RelatorioMovimentacoes';
 
 const RelatoriosPage = () => {
     const navigate = useNavigate();
@@ -12,6 +13,9 @@ const RelatoriosPage = () => {
 
     const [produtos, setProdutos] = useState([]);
     const [modaldeprodutos, openModalprodutos] = useState(false);
+
+    const [movimentacoes, setMovimentacoes] = useState([]);
+    const [modaldemovimentacoes, openModalmovimentacoes] = useState(false)
 
     const listarusuarios = async () => {
         try {
@@ -33,6 +37,16 @@ const RelatoriosPage = () => {
         }
     };
 
+    const listarmovimentacoes = async () => {
+        try {
+            const response = await api.get('/movimentacoes');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar movimentações:', error);
+            return [];
+        }
+    };
+
     useEffect(() => {
         async function fetchData() {
             const dadosusuarios = await listarusuarios();
@@ -40,6 +54,9 @@ const RelatoriosPage = () => {
 
             const dadosprodutos = await listarprodutos();
             setProdutos(dadosprodutos);
+
+            const dadosmoviment = await listarmovimentacoes();
+            setMovimentacoes(dadosmoviment);
         }
         fetchData();
     }, []);
@@ -53,24 +70,24 @@ const RelatoriosPage = () => {
 
             <section className="modulo-relatorios">
                 <article className="header-modulo-relatorios">
-                    <h2>Selecione um tipo de relatório para analisar melhor seus negócios!</h2>
+                    <h2>Selecione um módulo para emitir relatório e analisar melhor seus negócios!</h2>
                 </article>
 
                 <article className="sessoes">
                     <Link to="#" onClick={() => openModalusuarios(true)} className="relatorios-usuarios">
                         <h3>Usuários</h3>
-                        <h5>Emita relatórios contendo dados dos usuários do sistema GlowStock por aqui!</h5>
+                        <h5>Emita um relatório contendo dados dos usuários do sistema GlowStock por aqui!</h5>
                     </Link>
 
                     <Link to="#" onClick={() => openModalprodutos(true)} className="relatorios-produtos">
                         <h3>Produtos</h3>
-                        <h5>Emita relatórios contendo dados dos produtos e suas quantidades em estoque por aqui!</h5>
+                        <h5>Emita um relatório contendo dados dos produtos e suas quantidades em estoque por aqui!</h5>
                     </Link>
 
-                    {/* <Link to="#" className="relatorios-movimentacao">
+                    <Link to="#" onClick={() => openModalmovimentacoes(true)} className="relatorios-movimentacao">
                         <h3>Movimentações</h3>
-                        <h5>Emita relatórios contendo dados de movimentações de estoque de produtos do GlowStock por aqui!</h5>
-                    </Link> */}
+                        <h5>Emita um relatório contendo dados de movimentações de estoque de produtos do GlowStock por aqui!</h5>
+                    </Link>
                 </article>
             </section>
 
@@ -85,6 +102,13 @@ const RelatoriosPage = () => {
                 <RelatorioProdutos
                     produtos={produtos}
                     onClose={() => openModalprodutos(false)}
+                />
+            )}
+
+            {modaldemovimentacoes && (
+                <RelatorioMovimentacoes
+                    movimentacoes={movimentacoes}
+                    onClose={() => openModalmovimentacoes(false)}
                 />
             )}
         </div>
