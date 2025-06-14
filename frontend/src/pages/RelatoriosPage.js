@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../style/RelatoriosPage.css';
 import api from '../services/api';
 import RelatorioUsuarios from './report/RelatorioUsuarios';
-import RelatorioProdutos from './report/RelatoriosProdutos';
+import RelatorioProdutos from './report/RelatorioProdutos';
 import RelatorioMovimentacoes from './report/RelatorioMovimentacoes';
 
 const RelatoriosPage = () => {
