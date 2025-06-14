@@ -1,18 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import api from '../../services/api';
 import '../../style/RelatoriosPage.css';
 
 const RelatorioProdutos = ({ produtos, onClose }) => {
     const [filterByMark, setFilterMark] = useState('');
     const [filterByPrice, setFilterByPrice] = useState('');
     const [filterByStock, setFilterByStock] = useState('');
+    const [marcas, setMarcas] = useState([]);
 
-    const marcasUnicas = [...new Set(produtos.map(prod => prod.marca))];
+    useEffect(() => {
+        async function fetchMarcas() {
+            try {
+                const response = await api.get('/produtos');
+                const marcasnaoduplicadas = [...new Set(response.data.map(produto => produto.marca))];
+                 const options = marcasnaoduplicadas.map(marca => ({
+                    value: marca,
+                    label: marca
+                }));
+                setMarcas([{ value: '', label: 'Todos '}, ...options]);
+            } catch (error) {
+                console.error('Erro ao buscar marcas de produtos:', error);
+            }
+        } fetchMarcas();
+    }, []);
 
     const criarelatorioprodutos = () => {
+        const marcaselecionada = filterByMark?.value || '';
+
         const produtosfiltrados = produtos.filter(products =>
-            (filterByMark === '' || products.marca.toLowerCase().includes(filterByMark.toLowerCase())) &&
+            (marcaselecionada === '' || (products.marca ?? '').toLowerCase().includes(marcaselecionada.toLowerCase())) &&
             (filterByPrice === '' || parseFloat(products.preco) <= parseFloat(filterByPrice)) &&
             (filterByStock === '' || parseInt(products.qtde_estoque) <= parseInt(filterByStock))
         );
@@ -27,7 +46,7 @@ const RelatorioProdutos = ({ produtos, onClose }) => {
         doc.text('Relatório de Produtos - GlowStock', 65, 20);
 
         doc.setFontSize(13);
-        doc.text(`Marca filtrada: ${formalize(filterByMark || 'Todas')}`, 14, 35);
+        doc.text(`Marca filtrada: ${formalize(marcaselecionada || 'Todas')}`, 14, 35);
         doc.text(`Preço filtrado: ${filterByPrice || 'Todos'}`, 14, 40);
         doc.text(`Estoque máximo filtrado: ${filterByStock || 'Nenhum'}`, 14, 45);
 
@@ -61,41 +80,36 @@ const RelatorioProdutos = ({ produtos, onClose }) => {
         doc.save('relatorioDeProdutos.pdf');
     };
 
-    const handleMarkInput = (e) => {
-        setFilterMark(e.target.value);
-    };
-
     return (
         <div className="modal">
             <div className="modal-content">
                 <h2>Filtros para Produtos</h2>
-                
 
-                {/* -------------------------------------------- */}
-                {/* ajustar filtro de marca para deixar semelhante ao
-                filtro de produtos no relatório de movimentações */}
-                {/* -------------------------------------------- */}
-
-                {/* <label>
-                    Marca:
-                    <input
+                <div className="seletormarca" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <label style={{ minWidth: '100px' }}>Marca:</label>
+                    <Select
+                        id="marca"
+                        className="seletorDigit"
+                        options={marcas}
                         value={filterByMark}
-                        onChange={handleMarkInput}
-                        placeholder="Digite a marca com acentos"
+                        onChange={setFilterMark}
+                        placeholder="Digite ou selecione uma marca"
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                width: '200px',
+                                fontSize: '13px',
+                            })
+                        }}
                     />
-                    <datalist>
-                        {marcasUnicas.map((marca, index) => (
-                            <option key={index} value={marca} />
-                        ))}
-                    </datalist>
-                </label> */}
+                </div>
 
                 <label>
                     Preço Máximo:
                     <input
                         type="number"
                         step="0.01"
-                        placeholder="Ex: 35.00 ou 35,00"
+                        placeholder="Ex: 35.00"
                         value={filterByPrice}
                         onChange={(e) => setFilterByPrice(e.target.value)}
                     />

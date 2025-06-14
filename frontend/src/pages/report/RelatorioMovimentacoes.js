@@ -8,9 +8,10 @@ import '../../style/RelatoriosPage.css';
 const RelatorioMovimentacoes = ({ movimentacoes, onClose }) => {
 
     const [filterByProduct, setFilterByProduct] = useState(null);
-    const [filterByTipoMov, setFilterByTipoMov] = useState('');
-    const [filterByUser, setFilterByUser] = useState('');
+    const [filterByTipoMov, setFilterByTipoMov] = useState({ value: '', label: 'Todos' });
+    const [filterByUser, setFilterByUser] = useState(null);
     const [produtos, setProdutos] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
 
     useEffect(() => {
         async function fetchProdutos() {
@@ -24,17 +25,30 @@ const RelatorioMovimentacoes = ({ movimentacoes, onClose }) => {
             } catch (error) {
                 console.error('Erro ao buscar produtos:', error);
             }
-        }
-        fetchProdutos();
+        } fetchProdutos();
+
+        async function fetchUsuarios() {
+            try {
+                const response = await api.get('/usuarios');
+                const options = response.data.map(usuario => ({
+                    value: usuario.nomecomp,
+                    label: usuario.nomecomp
+                }));
+                setUsuarios([{ value: '', label: 'Todos' }, ...options]);
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+            }
+        } fetchUsuarios();
     }, []);
 
     const criarelatoriomovimentacoes = () => {
         const produtoselecionado = filterByProduct?.value || '';
+        const usuarioselecionado = filterByUser?.value || '';
 
         const movimentacoesfiltradas = movimentacoes.filter(moviments =>
             (produtoselecionado === '' || (moviments.produtos ?? '').toLowerCase().includes(produtoselecionado.toLowerCase())) &&
-            (filterByTipoMov === '' || moviments.tipo_movimentacao === filterByTipoMov) &&
-            (filterByUser === '' || (moviments.usuarios ?? '').toLowerCase().includes(filterByUser.trim().toLowerCase()))
+            (filterByTipoMov.value === '' || moviments.tipo_movimentacao === filterByTipoMov.value) &&
+            (usuarioselecionado === '' || (moviments.usuarios ?? '').toLowerCase().includes(usuarioselecionado.toLowerCase()))
         );
 
         const formalize = (string) => {
@@ -53,8 +67,8 @@ const RelatorioMovimentacoes = ({ movimentacoes, onClose }) => {
 
         doc.setFontSize(13);
         doc.text(`Produto filtrado: ${formalize(produtoselecionado || 'Todos')}`, 14, 35);
-        doc.text(`Tipo de Movimentação filtrado: ${formalize(filterByTipoMov || 'Todos')}`, 14, 40);
-        doc.text(`Usuário filtrado: ${formalize(filterByUser || 'Nenhum')}`, 14, 45);
+        doc.text(`Tipo de Movimentação filtrado: ${formalize(filterByTipoMov.label || 'Todos')}`, 14, 40);
+        doc.text(`Usuário filtrado: ${formalize(usuarioselecionado || 'Nenhum')}`, 14, 45);
 
         autoTable(doc, {
             startY: 50,
@@ -111,32 +125,47 @@ const RelatorioMovimentacoes = ({ movimentacoes, onClose }) => {
                     />
                 </div>
 
-
-{/* ------------------------------------------------------- */}
-{/* ajustar filtro para ficar no mesmo design que os outros */}
-{/* ------------------------------------------------------- */}
-                
-                {/* <label>
-                    Tipo de Movimentação:
-                    <select value={filterByTipoMov} onChange={e => setFilterByTipoMov(e.target.value)}>
-                        <option value="">Todos</option>
-                        <option value="saida">Saída</option>
-                        <option value="entrada">Entrada</option>
-                    </select>
-                </label> */}
-
-
-{/* --------------------------------------------------------------- */}
-{/* ajustar filtro de usuários para se assemelhar com o de produtos */}
-{/* --------------------------------------------------------------- */}
-                {/* <label>
-                    Usuário:
-                    <input
-                        value={filterByUser}
-                        onChange={e => setFilterByUser(e.target.value)}
-                        placeholder="Digite o nome completo do usuário com acentos"
+                <div className="seletortipomov" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <label style={{ minWidth: '100px', marginRight: '20px' }}>Tipo de Mov:</label>
+                    <Select
+                        id="movimentacao"
+                        className="seletor"
+                        options={[
+                            { value: '', label: 'Todos' },
+                            { value: 'entrada', label: 'Entrada' },
+                            { value: 'saida', label: 'Saída' }
+                        ]}
+                        value={filterByTipoMov}
+                        onChange={setFilterByTipoMov}
+                        placeholder="Selecione um tipo de movimentação"
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                width: '200px',
+                                fontSize: '13px',
+                            })
+                        }}
                     />
-                </label> */}
+                </div>
+                
+                <div className="seletorusuario" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <label style={{ minWidth: '100px' }}>Usuário:</label>
+                    <Select
+                        id="usuario"
+                        className="seletorDigit"
+                        options={usuarios}
+                        value={filterByUser}
+                        onChange={setFilterByUser}
+                        placeholder="Digite ou selecione um usuário"
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                width: '200px',
+                                fontSize: '13px',
+                            })
+                        }}
+                    />
+                </div>
 
                 <div className="modal-buttons">
                     <button type="cancel" onClick={onClose}>Cancelar</button>
