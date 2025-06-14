@@ -22,6 +22,11 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             const response = await api.post('/usuarios/login', formLogin);
+
+            if (response.data.status === 'inativo') {
+              alert('Seu usuário está inativo. Entre em contato com o administrador.');
+              return;
+            }
             
             // armazena os dados do usuário logado
             sessionStorage.setItem('usuario', JSON.stringify(response.data));

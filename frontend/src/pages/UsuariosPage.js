@@ -137,7 +137,7 @@ const UsuariosPage = () => {
               <td>
                 <button onClick={() => handleEdit(usuario)}>Editar</button>
                 <button onClick={() => handleDelete(usuario.id)}>Excluir</button>
-                <button onClick={() => handlePutStatus(usuario.id, usuario.status)}>{usuario.status === 'ativo' ? 'Inativar' : 'Ativar'}</button>
+                <button onClick={() => handlePutStatus(usuario.id, usuario.status)}>{usuario.status === 'inativo' ? 'Ativar' : 'Inativar'}</button>
               </td>
             </tr>
           ))}
@@ -174,7 +174,7 @@ const UsuariosPage = () => {
                 required
               />
               <div className="modal-actions">
-                <button type="button" onClick={handleCloseDialog}>Cancelar</button>
+                <button type="cancel" onClick={handleCloseDialog}>Cancelar</button>
                 <button type="submit">{isEditing ? 'Atualizar' : 'Salvar'}</button>
               </div>
             </form>

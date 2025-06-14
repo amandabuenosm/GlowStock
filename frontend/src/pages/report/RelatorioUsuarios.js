@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import api from '../../services/api';
 import '../../style/RelatoriosPage.css';
 
 const RelatorioUsuarios = ({ usuarios, onClose }) => {
-    const [filterByStatus, setFilterStatus] = useState('');
+    const [filterByStatus, setFilterStatus] = useState({ value: '', label: 'Todos' });
 
     const criarelatoriousuarios = () => {
-        const usuariosfiltrados = usuarios.filter(
-            users => filterByStatus === '' || users.status === filterByStatus
+        const usuariosfiltrados = usuarios.filter(users =>
+            (filterByStatus.value === '' || users.status === filterByStatus.value)
         );
 
         const formalize = (string) => {
@@ -21,12 +23,16 @@ const RelatorioUsuarios = ({ usuarios, onClose }) => {
         doc.text('Relatório de Usuários - GlowStock', 65, 20);
 
         doc.setFontSize(14);
-        doc.text(`Status filtrado: ${filterByStatus || 'Todos'}`, 14, 35);
+        doc.text(`Status filtrado: ${formalize(filterByStatus.label || 'Todos')}`, 14, 35);
 
         autoTable(doc, {
             startY: 40,
             head: [['Login', 'Nome Completo', 'Status']],
-            body: usuariosfiltrados.map(users => [users.login, users.nomecomp, formalize(users.status)]),
+            body: usuariosfiltrados.map(users => [
+                users.login,
+                users.nomecomp,
+                formalize(users.status)
+            ]),
             theme: 'grid',
             headStyles: {
                 fillColor: '#3B3973',
@@ -53,20 +59,28 @@ const RelatorioUsuarios = ({ usuarios, onClose }) => {
             <div className="modal-content">
                 <h2>Filtros para Usuários</h2>
 
-                {/* -------------------------------------------- */}
-                {/* ajustar filtro de status para deixar semelhante ao
-                filtro de produtos no relatório de movimentações */}
-                {/* -------------------------------------------- */}
-
-
-                {/* <label>
-                    Status:
-                    <select value={filterByStatus} onChange={e => setFilterStatus(e.target.value)}>
-                        <option value="">Todos</option>
-                        <option value="ativo">Ativo</option>
-                        <option value="inativo">Inativo</option>
-                    </select>
-                </label> */}
+                <div className="seletorstatususer" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <label style={{ minWidth: '100px', marginRight: '20px' }}>Status:</label>
+                    <Select
+                        id="status"
+                        className="seletor"
+                        options={[
+                            { value: '', label: 'Todos' },
+                            { value: 'inativo', label: 'Inativo' },
+                            { value: 'ativo', label: 'Ativo' }
+                        ]}
+                        value={filterByStatus}
+                        onChange={setFilterStatus}
+                        placeholder="Selecione um status"
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                width: '200px',
+                                fontSize: '13px',
+                            })
+                        }}
+                    />
+                </div>
 
                 <div className="modal-buttons">
                     <button type="cancel" onClick={onClose}>Cancelar</button>
